@@ -20,4 +20,7 @@
 
 #define WS2812_PIN 4
 
+#define RELAY_PIN 32
+#define RELAY_B_PIN 18
+
 #endif
