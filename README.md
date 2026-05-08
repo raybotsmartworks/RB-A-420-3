@@ -1,54 +1,113 @@
-# RB-A-420-3 机械臂控制
+# RB-A-420-3 Robotic Arm Control
 
-## 简介
-基于ESP32的CAN总线机械臂控制系统
+## Introduction
 
-## 硬件
+ESP32-based CAN bus control system for RB-A-420-3 6-axis robotic arm with web interface.
+
+![Platform](https://img.shields.io/badge/Platform-ESP32-blue)
+![Framework](https://img.shields.io/badge/Framework-PlatformIO-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+## Hardware
+
 - ESP32 DevKit
-- RB-A-420-3 机械臂
-- CAN总线接口
+- RB-A-420-3 Robotic Arm (6-axis + gripper)
+- CAN Bus Interface
 
-## 软件
+## Software
+
 - PlatformIO
 - ESP Async WebServer
+- Arduino Framework
 
-## 功能
-- CAN通信控制
-- Web界面控制
-- 实时反馈
+## Features
 
-## 使用方法
+- CAN bus communication with joint motors
+- Web-based remote control
+- Real-time status monitoring
+- Teaching & playback
+- Flash storage for presets
+- Emergency stop
 
-### 1. 编译上传
+## Getting Started
+
+### 1. Build & Upload
+
 ```bash
+# Build
+pio run
+
+# Upload via USB
 pio run --target upload
+
+# Upload over network
+pio run --target upload --upload-port 192.168.1.100
 ```
 
-### 2. 连接WiFi
-在 `include/config.h` 中配置WiFi名称和密码
+### 2. WiFi Configuration
 
-### 3. 访问Web界面
-在浏览器中输入ESP32的IP地址
+Edit `include/config.h`:
 
-## 引脚连接
-| 功能 | GPIO |
-|------|------|
-| CAN_TX | GPIO5 |
-| CAN_RX | GPIO4 |
+```c
+#define WIFI_SSID "YourWiFiName"
+#define WIFI_PASSWORD "YourPassword"
+```
 
-## 文件结构
+### 3. Access Web Interface
+
+Open browser and visit ESP32 IP address (default: `http://192.168.4.1` when in AP mode)
+
+## Pin Configuration
+
+| Function | GPIO |
+|----------|------|
+| CAN_TX | GPIO26 |
+| CAN_RX | GPIO27 |
+| CAN_EN | GPIO23 |
+
+## File Structure
+
 ```
 RB-A-420-3/
 ├── src/
-│   ├── main.cpp       # 主程序
-│   ├── rclib.cpp     # 机械臂控制库
-│   ├── rclib.h       # 库头文件
-│   └── web_pages.h   # 网页界面
+│   ├── main.cpp       # Main program
+│   ├── rclib.cpp     # Arm control library
+│   ├── rclib.h       # Library header
+│   └── web_pages.h   # Web interface
 ├── include/
-│   └── config.h      # 配置文件
-├── platformio.ini    # 项目配置
-└── README.md        # 说明文档
+│   └── config.h      # Configuration
+├── platformio.ini    # Project config
+├── README.md         # English docs
+├── README_zh.md     # Chinese docs
+└── LICENSE          # MIT License
 ```
 
-## 技术支持
-如有问题请联系技术支持
+## API Endpoints
+
+| Endpoint | Parameter | Description |
+|----------|-----------|-------------|
+| `/` | GET | Web control page |
+| `/cmd` | `action=xxx` | Execute command |
+| `/status` | GET | JSON status |
+
+**Commands:**
+- `readJoints` - Read joint angles
+- `record` - Record current pose
+- `runTeach` - Run teaching sequence
+- `clawOpen` / `clawClose` - Gripper control
+- `preset1-4` - Run preset actions
+- `emergency` - Emergency stop
+
+## Documentation
+
+- [English README](README.md)
+- [中文说明](README_zh.md)
+- [详细使用说明](RB-A-420-3机械臂使用及代码说明.md)
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file.
+
+## Support
+
+For issues and questions, please open an Issue on GitHub.
